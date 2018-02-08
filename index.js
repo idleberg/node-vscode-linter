@@ -42,7 +42,7 @@ const src = {
 };
 
 const jsonReporter = function (lint, file) {
-    throw `${file.path}: ${lint.error}`;
+  throw `${file.path}: ${lint.error}`;
 };
 
 // Lint JSON
