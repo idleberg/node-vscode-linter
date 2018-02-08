@@ -41,7 +41,7 @@ const src = {
   ],
 };
 
-var jsonReporter = function (lint, file) {
+const jsonReporter = function (lint, file) {
     throw `${file.path}: ${lint.error}`;
 };
 
