@@ -14,6 +14,12 @@ Install `vscode-linter` dependency for your VSCode extension
 yarn add vscode-linter --dev || npm install vscode-linter -D
 ```
 
+Alternatively, you can install `vscode-linter` globally for use as a CLI tool.
+
+```sh
+yarn global add vscode-linter || npm install -g vscode-linter
+```
+
 ## License
 
 This work is licensed under [The MIT License](https://opensource.org/licenses/MIT)
