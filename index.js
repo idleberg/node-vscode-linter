@@ -20,14 +20,14 @@ const options = {
 const src = {
     json: [
         'package.json',
-        'snippets/*.json',
+        'snippets/**/*.json',
         'tsconfig.json',
         'tslint.json',
         '!bower_components/**/*',
         '!node_modules/**/*'
     ],
     ts: [
-        '**/*.ts',
+        'src/**/*.ts',
         '!bower_components/**/*',
         '!node_modules/**/*'
     ],
