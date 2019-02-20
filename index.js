@@ -1,71 +1,82 @@
 #!/usr/bin/env node
 
+const meta = require('./package.json');
+
 // Dependencies
-const gulp = require('gulp');
 const debug = require('gulp-debug');
-// const esLint = require('gulp-eslint');
+const gulp = require('gulp');
 const jsonLint = require('gulp-json-lint');
+const program = require('commander');
 const tsLint = require('gulp-tslint');
 const xmlValidator = require('gulp-xml-validator');
+const { argv } = require('process');
+const { join } = require('path');
 
 // Gulp options
 const options = {
-  allowEmpty: true
+    allowEmpty: true
 };
 
 const src = {
-  json: [
-    'package.json',
-    'snippets/*.json',
-    'tsconfig.json',
-    'tslint.json',
-    '!bower_components/**/*',
-    '!node_modules/**/*'
-  ],
-  // javascript: [
-  //   '**/*.js',
-  //   '!bower_components/**/*',
-  //   '!node_modules/**/*'
-  // ],
-  typescript: [
-    '**/*.ts',
-    '!bower_components/**/*',
-    '!node_modules/**/*'
-  ],
-  xml: [
-    '**/*.svg',
-    '**/*.tmLanguage',
-    '**/*.tmTheme',
-    '!bower_components/**/*',
-    '!node_modules/**/*'
-  ],
+    json: [
+        'package.json',
+        'snippets/**/*.json',
+        'tsconfig.json',
+        'tslint.json',
+        '!bower_components/**/*',
+        '!node_modules/**/*'
+    ],
+    ts: [
+        'src/**/*.ts',
+        '!bower_components/**/*',
+        '!node_modules/**/*'
+    ],
+    xml: [
+        '**/*.svg',
+        '**/*.tmLanguage',
+        '**/*.tmTheme',
+        '!bower_components/**/*',
+        '!node_modules/**/*'
+    ],
 };
 
-const jsonReporter = function (lint, file) {
-  throw `${file.path}: ${lint.error}`;
+const jsonReporter = (lint, file) => {
+    throw `${file.path}: ${lint.error}`;
 };
 
-// Lint JSON
-gulp.src(src.json, options)
-  .pipe(debug({title: 'Lint JSON:'}))
-  .pipe(jsonLint({
-    comments: true
-  }))
-  .pipe(jsonLint.report('verbose'))
-  .pipe(jsonLint.report(jsonReporter));
+program
+    .version(meta.version)
+    .description('Lints common file-types used in VSCode extensions')
+    .arguments('[directory]')
+    .usage('[directory]')
+    .parse(argv);
 
-// gulp.src(src.javascript, options)
-//   .pipe(debug({title: 'Lint JavaScript:'}))
-//   .pipe(esLint());
+const directories = (typeof program.args !== 'undefined' && program.args.length > 0) ? program.args : ['.'];
 
-gulp.src(src.typescript, options)
-  .pipe(debug({title: 'Lint TypeScript:'}))
-  .pipe(tsLint({
-      formatter: "prose"
-  }))
-  .pipe(tsLint.report());
+directories.forEach( directory => {
+    let json = src.json.map(item => join(directory, item));
+    let ts = src.ts.map(item => join(directory, item));
+    let xml = src.xml.map(item => join(directory, item));
 
-// Validate XML
-gulp.src(src.xml, options)
-  .pipe(debug({title: 'Lint XML:'}))
-  .pipe(xmlValidator());
+    // Lint JSON
+    gulp.src(json, options)
+        .pipe(debug({title: 'Lint JSON:'}))
+        .pipe(jsonLint({
+            comments: true
+        }))
+        .pipe(jsonLint.report('verbose'))
+        .pipe(jsonLint.report(jsonReporter));
+
+    // Lint TypeScript
+    gulp.src(ts, options)
+        .pipe(debug({title: 'Lint TypeScript:'}))
+        .pipe(tsLint({
+            formatter: 'prose'
+        }))
+        .pipe(tsLint.report());
+
+    // Validate XML
+    gulp.src(xml, options)
+        .pipe(debug({title: 'Lint XML:'}))
+        .pipe(xmlValidator());
+});
