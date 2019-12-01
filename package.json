@@ -6,8 +6,9 @@
   "license": "MIT",
   "repository": "https://github.com/idleberg/node-vscode-linter",
   "scripts": {
-    "precommit": "npm test",
-    "test": "eslint index.js"
+    "lint": "eslint index.js",
+    "lint:fix": "eslint --fix index.js",
+    "test": "npm run lint"
   },
   "keywords": [
     "vscode",
@@ -32,5 +33,10 @@
   "devDependencies": {
     "eslint": "^6.7.2",
     "husky": "^3.1.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run test"
+    }
   }
 }
