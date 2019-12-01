@@ -51,7 +51,10 @@ program
     .usage('[directory]')
     .parse(argv);
 
-const directories = (typeof program.args !== 'undefined' && program.args.length > 0) ? program.args : ['.'];
+const directories = (typeof program.args !== 'undefined' && program.args.length > 0)
+    ? program.args
+    : [ process.cwd() ];
+
 
 directories.forEach( directory => {
     let json = src.json.map(item => join(directory, item));
