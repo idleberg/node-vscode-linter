@@ -5,16 +5,23 @@ const meta = require('./package.json');
 // Dependencies
 const debug = require('gulp-debug');
 const gulp = require('gulp');
-const jsonLint = require('gulp-json-lint');
+const jsonLint = require('@prantlf/gulp-jsonlint');
+const process = require('process');
 const program = require('commander');
 const tsLint = require('gulp-tslint');
 const xmlValidator = require('gulp-xml-validator');
-const { argv } = require('process');
-const { join } = require('path');
+
+program
+    .version(meta.version)
+    .description('Lints common file-types used in VSCode extensions')
+    .arguments('[directory]')
+    .usage('[directory]')
+    .parse(process.argv);
 
 // Gulp options
 const options = {
-    allowEmpty: true
+    allowEmpty: true,
+    cwd: program.args && program.args.length ? program.args[0] : process.cwd
 };
 
 const src = {
@@ -40,43 +47,23 @@ const src = {
     ],
 };
 
-const jsonReporter = (lint, file) => {
-    throw `${file.path}: ${lint.error}`;
-};
+// Lint JSON
+gulp.src(src.json, options)
+    .pipe(debug({title: 'Lint JSON:'}))
+    .pipe(jsonLint({
+        ignoreComments: true,
+    }))
+    .pipe(jsonLint.failOnError());
 
-program
-    .version(meta.version)
-    .description('Lints common file-types used in VSCode extensions')
-    .arguments('[directory]')
-    .usage('[directory]')
-    .parse(argv);
+// Lint TypeScript
+gulp.src(src.ts, options)
+    .pipe(debug({title: 'Lint TypeScript:'}))
+    .pipe(tsLint({
+        formatter: 'prose'
+    }))
+    .pipe(tsLint.report());
 
-const directories = (typeof program.args !== 'undefined' && program.args.length > 0) ? program.args : ['.'];
-
-directories.forEach( directory => {
-    let json = src.json.map(item => join(directory, item));
-    let ts = src.ts.map(item => join(directory, item));
-    let xml = src.xml.map(item => join(directory, item));
-
-    // Lint JSON
-    gulp.src(json, options)
-        .pipe(debug({title: 'Lint JSON:'}))
-        .pipe(jsonLint({
-            comments: true
-        }))
-        .pipe(jsonLint.report('verbose'))
-        .pipe(jsonLint.report(jsonReporter));
-
-    // Lint TypeScript
-    gulp.src(ts, options)
-        .pipe(debug({title: 'Lint TypeScript:'}))
-        .pipe(tsLint({
-            formatter: 'prose'
-        }))
-        .pipe(tsLint.report());
-
-    // Validate XML
-    gulp.src(xml, options)
-        .pipe(debug({title: 'Lint XML:'}))
-        .pipe(xmlValidator());
-});
+// Validate XML
+gulp.src(src.xml, options)
+    .pipe(debug({title: 'Lint XML:'}))
+    .pipe(xmlValidator());
