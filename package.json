@@ -1,6 +1,6 @@
 {
   "name": "vscode-linter",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "Linter for VSCode extensions, supporting language syntax, snippets, themes and more",
   "author": "Jan T. Sott",
   "license": "MIT",
