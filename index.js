@@ -21,7 +21,7 @@ program
 // Gulp options
 const options = {
   allowEmpty: true,
-  cwd: program.args && program.args.length ? program.args[0] : process.cwd
+  cwd: program.args && program.args.length ? program.args[0] : process.cwd()
 };
 
 const src = {
