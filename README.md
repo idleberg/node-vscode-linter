@@ -1,9 +1,9 @@
 # vscode-linter
 
-[![npm](https://img.shields.io/npm/l/vscode-linter.svg?style=flat-square)](https://www.npmjs.org/package/vscode-linter)
-[![npm](https://img.shields.io/npm/v/vscode-linter.svg?style=flat-square)](https://www.npmjs.org/package/vscode-linter)
-[![CircleCI](https://img.shields.io/circleci/project/idleberg/node-vscode-linter.svg?style=flat-square)](https://circleci.com/gh/idleberg/node-vscode-linter/)
-[![David](https://img.shields.io/david/idleberg/node-vscode-linter.svg?style=flat-square)](https://david-dm.org/idleberg/node-vscode-linter)
+[![The MIT License](https://flat.badgen.net/badge/license/MIT/orange)](http://opensource.org/licenses/MIT)
+[![GitHub](https://flat.badgen.net/github/release/idleberg/node-vscode-linter)](https://github.com/idleberg/node-vscode-linter/releases)
+[![CircleCI](https://flat.badgen.net/circleci/github/idleberg/node-vscode-linter)](https://circleci.com/gh/idleberg/node-vscode-linter)
+[![David](https://flat.badgen.net/david/dev/idleberg/node-vscode-linter)](https://david-dm.org/idleberg/node-vscode-linter)
 
 Linter for VSCode extensions, supporting language syntax, snippets, themes and more.
 
