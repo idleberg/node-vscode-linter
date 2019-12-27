@@ -20,7 +20,7 @@
     "vscode-linter": "index.js"
   },
   "dependencies": {
-    "@prantlf/gulp-jsonlint": "prantlf/gulp-jsonlint#v2.1.1",
+    "@prantlf/gulp-jsonlint": "^2.3.2",
     "commander": "^4.0.1",
     "gulp": "^4.0.2",
     "gulp-debug": "^4.0.0",
